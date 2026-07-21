@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "currency": "USD",
+    "unit": "per 1,000,000 tokens",
+    "note": "Illustrative placeholder pricing, not a live feed. Verify every number against the provider's current pricing page before trusting an estimate — treat this file as a knob you keep current, not as ground truth. Point --pricing at your own copy once you have real numbers; the script refuses to guess a price for a model it doesn't recognize."
+  },
+  "models": {
+    "gemini-3.5-flash": {"input_per_mtok": 0.10, "output_per_mtok": 0.40, "as_of": "2026-07-01"},
+    "claude-fable-5": {"input_per_mtok": 3.00, "output_per_mtok": 15.00, "as_of": "2026-07-01"},
+    "claude-sonnet-5": {"input_per_mtok": 3.00, "output_per_mtok": 15.00, "as_of": "2026-07-01"},
+    "claude-opus-4-8": {"input_per_mtok": 15.00, "output_per_mtok": 75.00, "as_of": "2026-07-01"},
+    "claude-haiku-4-5": {"input_per_mtok": 0.80, "output_per_mtok": 4.00, "as_of": "2026-07-01"},
+    "gpt-5.6": {"input_per_mtok": 2.50, "output_per_mtok": 10.00, "as_of": "2026-07-01"}
+  }
+}

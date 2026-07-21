@@ -1,0 +1,56 @@
+{
+  "skill": "llm-budget-guardrail",
+  "purpose": "Trigger-behavior spec, two consumers: (1) CI runs tools/run_trigger_evals.py against these cases lexically — positives must clear near-misses on description vocabulary alone; (2) after any description change, also verify by hand in a fresh agent session. Cases with lexical:false trigger via reasoning, not vocabulary, and are covered by the behavioral tier (evals.json).",
+  "cases": [
+    {
+      "id": "estimate-before-run",
+      "prompt": "before you kick off this batch of 20 model calls, can you estimate what it'll cost against a $5 budget?",
+      "should_trigger": true,
+      "assert": "Builds a plan.json describing the calls and runs `estimate --plan ... --budget 5`, reporting total cost and remaining budget before anything runs."
+    },
+    {
+      "id": "track-spend-explicit",
+      "prompt": "track spend against my budget as this multi-model loop runs",
+      "should_trigger": true,
+      "assert": "Runs `track` after each actual call, appending to a ledger, and surfaces the running total against the stated budget."
+    },
+    {
+      "id": "warn-before-expensive",
+      "prompt": "warn me before this gets expensive",
+      "should_trigger": true,
+      "assert": "Sets up budget tracking with a --warn-at threshold and checks the exit code / warning after each call rather than only at the end."
+    },
+    {
+      "id": "how-much-will-this-cost",
+      "prompt": "how much will it cost to run these 40 API calls against my budget?",
+      "should_trigger": true,
+      "assert": "Estimates cost from the planned calls and pricing table before they run, and checks the result against the stated budget."
+    },
+    {
+      "id": "near-miss-single-call",
+      "prompt": "did my last message to Claude actually go through okay",
+      "should_trigger": false,
+      "assert": "Does not trigger; a single call with no plan or budget to track has nothing for this skill to estimate or track against."
+    },
+    {
+      "id": "near-miss-billing-dashboard",
+      "prompt": "pull up my Anthropic billing dashboard and show this month's invoice",
+      "should_trigger": false,
+      "assert": "Does not trigger; this skill estimates from token counts and a local pricing table, it is not a billing API integration or invoice viewer."
+    },
+    {
+      "id": "near-miss-orchestration-only",
+      "prompt": "orchestrate this research task across a team of models",
+      "should_trigger": false,
+      "assert": "Does not trigger by itself; that's advisor-orchestrator-worker's job. This skill only triggers when cost estimation or budget tracking is explicitly part of the ask.",
+      "lexical": false
+    },
+    {
+      "id": "reasoning-implied-budget-risk",
+      "prompt": "we're about to run 200 workers through Gemini for this migration, I don't want a surprise bill",
+      "should_trigger": true,
+      "assert": "Recognizes the implied cost-risk concern and proposes an estimate against a budget before the 200 dispatches, even though 'cost' and 'budget' aren't both stated explicitly.",
+      "lexical": false
+    }
+  ]
+}

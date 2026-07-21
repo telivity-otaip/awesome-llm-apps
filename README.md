@@ -130,6 +130,7 @@ streamlit run travel_agent.py
 
 *   [⚰️ Project Graveyard](agent_skills/project-graveyard/) - Finds every side project you abandoned, tells you why each one died, and helps you finish the one worth going back to
 *   [🧠 Advisor Orchestrator Worker](agent_skills/advisor-orchestrator-worker/) - Meta Loop with Claude Flabe 5 as advisor, GPT-5.6 as orchestrator, and Gemini 3.5 Flash as worker
+*   [💰 LLM Budget Guardrail](agent_skills/llm-budget-guardrail/) - Estimates and tracks LLM API spend against a budget, standalone from any other skill
 *   [♾️ Self-Improving Agent Skills](agent_skills/self-improving-agent-skills/) - Automatically optimize agent skills using Gemini and ADK
 
 ### 🌱 Starter AI Agents

@@ -19,6 +19,7 @@ Most "skills" on registries are text-only prompt dumps — advice the model alre
 | Skill | What it does |
 |---|---|
 | [🧠 advisor-orchestrator-worker](advisor-orchestrator-worker/) | Turns your agent into the orchestrator of a three-tier model team: cheap stateless workers in parallel, expensive advisor consulted only at commitment boundaries, verification gates between every step — budgeted so a run can't burn a hole in your API bill |
+| [💰 llm-budget-guardrail](llm-budget-guardrail/) | Estimates the dollar cost of a planned batch of LLM calls against a budget before it runs, then tracks actual spend as calls happen, warning before you go over — standalone, no dependency on any other skill here |
 | [⚰️ project-graveyard](project-graveyard/) | Scans your machine for dead side projects, autopsies why each one died from its git history (deploy fear, payments wall, killed by a newer project), shows your personal death patterns, and resurrects the one with a pulse — with relapse tracking on every resurrection it prescribes |
 | [♾️ self-improving-agent-skills](self-improving-agent-skills/) | Automatically optimizes agent skills using Gemini and ADK |
 

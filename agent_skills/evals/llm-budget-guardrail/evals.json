@@ -1,0 +1,48 @@
+{
+  "skill_name": "llm-budget-guardrail",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm about to fan this out across 15 Gemini Flash workers and 2 advisor consults with Claude Fable 5. Estimate the cost against a $2 budget before we start.",
+      "expected_output": "A plan.json built from the described calls, run through `estimate --budget 2`, with the total, per-model breakdown, and remaining budget reported before any dispatch happens.",
+      "expectations": [
+        "The agent built a plan reflecting all 15 worker calls and 2 advisor calls, not just one representative call",
+        "scripts/budget_guardrail.py estimate was actually run, not hand-estimated by the model",
+        "The reported total, per-model breakdown, and budget headroom came from the script's output",
+        "If the estimate exceeded or came close to the budget, the agent flagged it before proceeding rather than after"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Track spend against a $3 budget as this loop runs — I don't want to find out I blew it after the fact.",
+      "expected_output": "A ledger file created, `track` invoked after each actual call as it completes, and the running total surfaced against the $3 budget with a warning if it crosses the warn-at threshold.",
+      "expectations": [
+        "A ledger file (JSONL) is created and appended to via `track`, once per actual call, not batched at the end",
+        "The agent reports the running total and remaining budget after each recorded call, not only at completion",
+        "If spend crosses the warn-at threshold or the budget, the agent surfaces that immediately rather than silently continuing",
+        "The $3 budget is passed through to every track/report call so the exit code reflects it"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "How much did this batch actually end up costing?",
+      "expected_output": "A `report` run against the existing ledger, returning the actual cumulative spend and per-model breakdown — read-only, no new call recorded.",
+      "expectations": [
+        "The agent used `report`, not `track` (no new call actually happened, so nothing should be appended)",
+        "The reported total matches the ledger's actual contents",
+        "Per-model breakdown is included if multiple models were used"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We want to use a brand-new model, 'gpt-omni-mini', in the plan — go ahead and estimate the cost.",
+      "expected_output": "The agent adds the model to the pricing table with real numbers from the provider's pricing page (or asks for them), rather than letting the script guess or silently skip it.",
+      "expectations": [
+        "The agent recognized that an unknown model is a hard error in this skill, not a $0 default",
+        "The agent either asked the user for the model's real per-token pricing or looked it up, then added it to a pricing file",
+        "The estimate was only produced after the pricing table had a real entry for the model",
+        "No fabricated price was invented without flagging it as a placeholder needing verification"
+      ]
+    }
+  ]
+}
